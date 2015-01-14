@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!-- plugin.xml file written by dynaTrace Client 4.2.0 -->
+<plugin>
+  <extension point="com.dynatrace.diagnostics.pdk.pluginconfig" id="com.dynatrace.sshClient" name="SSHClientAction">
+    <information>
+      <category value="" />
+      <displayname value="SSHClientAction" />
+      <description value="This plugin allows for any command to be executed via SSH on any specified remote host as an Incident Action" />
+      <supportlevel value="unsupported" />
+    </information>
+    <configuration>
+      <property key="host" label="Remote Host" type="string" description="Hostname (or IP Address) of remote host where  SSH service is running and specified command will be executed." default="localhost" />
+      <property key="username" label="username" type="string" description="Username of user to be used for SSH authentication" default="user" />
+      <property key="password" label="password" type="password" description="Password for the specified username." default="" />
+      <property key="command" label="Command" type="string" description="The command string to be executed on the specified remote host." default="ping" />
+    </configuration>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.action" id="com.dynatrace.sshClient.action" name="Remote Command Execution (SSH)">
+    <plugin configid="com.dynatrace.sshClient" class="com.dynatrace.sshClientPlugin.SSHClientPlugin" />
+  </extension>
+</plugin>
+
