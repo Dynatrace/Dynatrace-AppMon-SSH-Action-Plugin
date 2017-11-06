@@ -10,14 +10,23 @@
       <supportlevel value="unsupported" />
     </information>
     <configuration>
-      <property key="host" label="Remote Host" type="string" description="Hostname (or IP Address) of remote host where  SSH service is running and specified command will be executed." default="localhost" />
-      <property key="username" label="username" type="string" description="Username of user to be used for SSH authentication" default="user" />
-      <property key="password" label="password" type="password" description="Password for the specified username." default="" />
-      <property key="command" label="Command" type="string" description="The command string to be executed on the specified remote host." default="ping" />
+      <property key="host" label="Remote Host" type="string" description="Hostname (or IP Address) of remote host where  SSH service is running and specified command will be executed." default="localhost" multiline="false" />
+      <property key="useKey" label="Use Key Based Authentication?" type="boolean" description="Select if you would like to use key-based authentication as opposed to username:password." default="false" />
+      <property key="username" label="username" type="string" description="Username of user to be used for SSH authentication" default="user" multiline="false" />
+      <property key="password" label="password" type="password" description="Password for the specified username." default="">
+        <visibility>
+          <rule key="useKey" value="false" />
+        </visibility>
+      </property>
+      <property key="keyLocation" label="Key Location" type="string" description="Location of the key to be used for authentciation" default="~/.ssh/id_rsa" multiline="false">
+        <visibility>
+          <rule key="useKey" value="true" />
+        </visibility>
+      </property>
+      <property key="command" label="Command" type="string" description="The command string to be executed on the specified remote host." default="ping" multiline="false" />
     </configuration>
   </extension>
   <extension point="com.dynatrace.diagnostics.pdk.action" id="com.dynatrace.sshClient.action" name="Remote Command Execution (SSH)">
     <plugin configid="com.dynatrace.sshClient" class="com.dynatrace.sshClientPlugin.SSHClientPlugin" />
   </extension>
 </plugin>
-

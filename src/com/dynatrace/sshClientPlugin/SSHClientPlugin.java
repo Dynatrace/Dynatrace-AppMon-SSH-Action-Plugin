@@ -22,11 +22,15 @@ public class SSHClientPlugin implements Action {
 	 **/
 
 	private static final Logger log = Logger.getLogger(SSHClientPlugin.class.getName());
+	private static final String USE_KEY = "useKey";
+	private static final String KEY_LOCATION = "keyLocation";
 	private static final String CONFIG_USERNAME = "username";
 	private static final String CONFIG_PASSWORD = "password";
 	private static final String CONFIG_HOST     = "host";
 	private static final String CONFIG_COMMAND  = "command";
 
+	private Boolean useKey;
+	private String keyLocation;
 	private String username;
 	private String password;
 	private String host;
@@ -51,10 +55,22 @@ public class SSHClientPlugin implements Action {
 
 	private void sendCommand() {
    	   try{
-      	      	JSch jsch=new JSch();
-      		Session session=jsch.getSession(username, host, 22);
+  	      	JSch jsch=new JSch();
+  	      	jsch.addIdentity(keyLocation);
+  	      	
+  	      	if (useKey.equals(true)) {
+  	      		//log.info(keyLocation);
+  	      		//jsch.addIdentity(keyLocation);
+  	      		//log.info("Added key from " + keyLocation);
+  	      	} else {
+  	      		//session.setPassword(password);
+  	      		//log.info("Using password...");
+  	      	}
+  	      
+  	      	Session session=jsch.getSession(username, host, 22);
+      		
+  	      	
       		session.setConfig("StrictHostKeyChecking", "no");
-      		session.setPassword(password);
       		session.connect(10000);
       
       		Channel channel=session.openChannel("exec");
@@ -88,11 +104,12 @@ public class SSHClientPlugin implements Action {
   }
 
   private void getArgs(ActionEnvironment env) {
+	  useKey = env.getConfigBoolean(USE_KEY);
+	  keyLocation = env.getConfigString(KEY_LOCATION);
 	  username = env.getConfigString(CONFIG_USERNAME);
 	  password = env.getConfigPassword(CONFIG_PASSWORD);
 	  host = env.getConfigString(CONFIG_HOST);
 	  command = env.getConfigString(CONFIG_COMMAND);
-
   }
 	
 }
