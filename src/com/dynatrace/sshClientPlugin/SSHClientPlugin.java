@@ -56,19 +56,19 @@ public class SSHClientPlugin implements Action {
 	private void sendCommand() {
    	   try{
   	      	JSch jsch=new JSch();
-  	      	jsch.addIdentity(keyLocation);
+  	      	Session session=jsch.getSession(username, host, 22);
+  	      	
+  	      	
+  	      	//Added logic to determine if a key should be used for authentication
   	      	
   	      	if (useKey.equals(true)) {
-  	      		//log.info(keyLocation);
-  	      		//jsch.addIdentity(keyLocation);
-  	      		//log.info("Added key from " + keyLocation);
+  	      		log.fine("Using key stored in: " + keyLocation);
+  	      		jsch.addIdentity(keyLocation);
   	      	} else {
-  	      		//session.setPassword(password);
-  	      		//log.info("Using password...");
+  	      		session.setPassword(password);
+  	      		log.fine("Using password...");
   	      	}
   	      
-  	      	Session session=jsch.getSession(username, host, 22);
-      		
   	      	
       		session.setConfig("StrictHostKeyChecking", "no");
       		session.connect(10000);
